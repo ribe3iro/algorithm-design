@@ -12,6 +12,7 @@ int solve(int node){
     visited = visited | (1 << node);
 
     if(visited == ((1 << n)-1)){
+        visited = visited & (~(1 << node));
         return 0;
     }
 
