@@ -1,22 +1,16 @@
-class Nim{
-    public:
-        int heaps[];
+#include"Nim.h"
 
-        Nim(int heaps[]){
-            this->heaps = heaps;
-        }
+Nim::Nim(vector<int> heaps){
+    this->heaps = heaps;
+}
 
-        int getGrundyNumber(){
-            int num_heaps = heaps.size();
-            int 
+int Nim::getNimSum(){
+    int num_heaps = this->heaps.size();
+    int grundy_number = 0;
 
-            for(int i = 0; i < num_heaps; i++){
+    for(int i = 0; i < num_heaps; i++){
+        grundy_number = grundy_number ^ this->heaps[i];
+    }
 
-            }
-        }
-    
-    private:
-        solveGrundyNumber(){
-
-        }
-};
+    return grundy_number;
+}
