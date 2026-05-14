@@ -23,7 +23,7 @@ int mex(set<int> positions){
 }
 
 int solve(int x, int y){
-    if(x < 0 || y < 0){
+    if(x < 0 || y < 0 || x >= GRID_SIZE || y >= GRID_SIZE){
         return -1;
     }
 
@@ -31,7 +31,7 @@ int solve(int x, int y){
         return grundy_matrix[x][y];
     }
 
-    set<int> future_positions;
+    set<int> future_positions = {};
     for(int i = 0; i < moves.size(); i++){
         pair<int, int> move = moves[i];
         int future_grundy = solve(x + move.first, y + move.second);
@@ -49,14 +49,11 @@ int main(){
 
     int k;
     int x,y;
-    int grundy = 0;
+    int grundy;
     fill(&grundy_matrix[0][0], &grundy_matrix[0][0] + (GRID_SIZE * GRID_SIZE), -1);
-    grundy_matrix[0][0] = 0;
-    grundy_matrix[1][0] = 0;
-    grundy_matrix[0][1] = 0;
-    grundy_matrix[1][1] = 0;
     for(int i = 0; i < t; i++){
         cin >> k;
+        grundy = 0;
         for(int j = 0; j < k; j++){
             cin >> x >> y;
             x--;
@@ -66,15 +63,16 @@ int main(){
         cout << (grundy != 0 ? "Primeiro" : "Segundo") << endl;
     }
 
-    for(int i = 0; i < GRID_SIZE; i++){
-        for(int j = 0; j < GRID_SIZE; j++){
-            if(grundy_matrix[i][j] <= -1)
-                printf("__ ");
-            else
-                printf("%2d ", grundy_matrix[i][j]);
-        }
-        cout << endl;
-    }
+    // prints grundy_matrix
+    // for(int i = 0; i < GRID_SIZE; i++){
+    //     for(int j = 0; j < GRID_SIZE; j++){
+    //         if(grundy_matrix[i][j] <= -1)
+    //             printf(" _ ");
+    //         else
+    //             printf("%2d ", grundy_matrix[i][j]);
+    //     }
+    //     cout << endl;
+    // }
 
     return 0;
 }
