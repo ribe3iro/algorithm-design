@@ -5,6 +5,10 @@ using namespace std;
 const int M = 1e9 + 7;
 
 int modulo(int base, long long exp){
+    if(exp == 0){
+        return 1;
+    }
+
     if(exp == 1){
         return base;
     }
