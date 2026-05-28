@@ -6,7 +6,6 @@ vector<vector<int>> graph;
 vector<int> colors;
 int n, m;
 
-
 bool bipartite_(int node, int color){
     if(colors[node] == color){
         return true;
@@ -16,16 +15,26 @@ bool bipartite_(int node, int color){
         return false;
     }
 
+    colors[node] = color;
+    vector<int> neighbors = graph[node];
+    bool success = true;
+    for(int i = 0; i < neighbors.size(); i++){
+        int neighbor = neighbors[i];
+        success = success & bipartite_(neighbor, 3-color);
+    }
 
+    return success;
 }
 
 bool bipartite(){
     colors.assign(n, 0);
 
     bool success = true;
-    while(success && !to_visit.empty())
+
     for(int i = 0; i < n; i++){
-        success = success && bipartite_(i, 1);
+        if(colors[i] == 0){  // node i not visited
+            success = success && bipartite_(i, 1);
+        }
         if(!success){
             break;
         }
@@ -47,7 +56,20 @@ int main(){
         graph[b].push_back(a);
     }
     
-    bipartite();
+    if(bipartite()){
+        pair<int, int> counts;
+        for(int i = 0; i < n; i++){
+            if(colors[i] == 1){
+                counts.first++;
+            }else{
+                counts.second++;
+            }
+        }
+
+        printf("%d %d\n", counts.first, counts.second);
+    }else{
+        printf("impossivel\n");
+    }
 
     return 0;
 }
