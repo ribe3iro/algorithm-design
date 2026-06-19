@@ -2,17 +2,50 @@
 
 using namespace std;
 
+vector<int> get_LPS(string pattern){
+    vector<int> LPS(pattern.size(), 0);
+
+    int i = 1;
+    int j = 0;
+
+    while(i < pattern.size()){
+        if(pattern[i] == pattern[j]){
+            j++;
+            LPS[i] = j;
+            i++;
+        }else if(j > 0){
+            j = LPS[j-1];
+        }else{
+            LPS[i] = 0;
+            i++;
+        }
+    }
+
+    return LPS;
+}
+
 vector<int> get_occurrences(string pattern, string text){
     vector<int> positions;
-    for(int i = 0; i < text.size(); i++){
-        int j;
-        for(j = 0; j < pattern.size(); j++){
-            if(text[i] != pattern[j]){
-                break;
-            }
+    vector<int> LPS = get_LPS(pattern);
+    
+    int i = 0;  // text
+    int j = 0;  // pattern
+
+    while(i < text.size()){
+        if(text[i] == pattern[j]){
+            j++;
+            i++;
         }
+
         if(j == pattern.size()){
-            positions.push_back(i);
+            positions.push_back(i-j);
+            j = LPS[j-1];
+        }else if(i < text.size() && text[i] != pattern[j]){
+            if(j != 0){
+                j = LPS[j-1];
+            }else{
+                i++;
+            }
         }
     }
 
@@ -20,23 +53,18 @@ vector<int> get_occurrences(string pattern, string text){
 }
 
 int main(){
-    do{
-        int n;
+    int n;
+    while(cin >> n){
         string pattern, text;
 
-        cin >> n >> pattern >> text;
+        cin >> pattern >> text;
 
         vector<int> positions = get_occurrences(pattern, text);
-        if(positions.size() == 0){
-            cout << endl;
-        }else{
-            for(int i = 0; i < positions.size(); i++){
-                cout << positions[i] << endl;
-            }
+        for(int i = 0; i < positions.size(); i++){
+            cout << positions[i] << endl;
         }
         cout << endl;
-
-    }while(true);
+    }
 
     return 0;
 }
